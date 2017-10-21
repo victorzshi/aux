@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="695c7c86-b4fc-4ae5-b16d-3b3be4b8b002" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="695c7c86-b4fc-4ae5-b16d-3b3be4b8b002" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -56,9 +54,6 @@
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
-  </component>
-  <component name="NodeModulesDirectoryManager">
-    <handled-path value="$PROJECT_DIR$/Backend/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="1920" />
@@ -206,12 +201,12 @@
       <workItem from="1491876928113" duration="6619000" />
       <workItem from="1492566710859" duration="5145000" />
       <workItem from="1493084219660" duration="28000" />
-      <workItem from="1508604264446" duration="1737000" />
+      <workItem from="1508604264446" duration="1914000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24907000" />
+    <option name="totallyTimeSpent" value="25084000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="0" width="1920" height="1080" extended-state="0" />
