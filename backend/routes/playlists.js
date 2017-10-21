@@ -12,6 +12,7 @@ router.get('/create', function(req, res) {
 
 	// create playlist
 
+	print('yo');
 	var playlist = new Playlist();
 	playlist.hostName = 'amccannv';
 	// TO DO SAVE PLAYLIST WHEN CREATING
