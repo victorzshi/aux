@@ -1,5 +1,5 @@
 <template>
-<section class="hero is-dark is-bold is-fullheight">
+<section id="background" class="hero is-light is-bold is-fullheight">
   <!-- Hero head: will stick at the top -->
   <div class="hero-head">
     <div class="container">
@@ -119,7 +119,7 @@
   </div>
 
   <!-- Hero footer: will stick at the bottom -->
-  <div class="hero-foot">
+  <div id="footer" class="hero-foot">
     <div class="container">
       <nav class="level">
 
@@ -140,7 +140,7 @@
         <!-- Right side -->
         <div class="level-right">
           <a href="https://bulma.io">
-            <img src="../assets/made-with-bulma--white.png" alt="Made with Bulma" width="128" height="24">
+            <img src="../assets/made-with-bulma--dark.png" alt="Made with Bulma" width="128" height="24">
           </a>
         </div>
 
@@ -168,6 +168,14 @@
 
 #room_entry_field {
   margin-top: 15%;
+}
+
+#footer {
+  margin-bottom: 2.5%;
+}
+
+#background {
+  background: linear-gradient(#AB47BC, #EF9A9A);
 }
 
 </style>
