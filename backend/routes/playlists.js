@@ -1,7 +1,6 @@
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var querystring = require('querystring');
-var cookieParser = require('cookie-parser');
 var SpotifyWebApi = require('spotify-web-api-node');
 var mongoose = require('mongoose');
 var Playlist = mongoose.model('Playlist');
@@ -12,42 +11,52 @@ var router = express.Router();
 router.get('/create', function(req, res) {
 
 	var playlist = new Playlist();
-	playlist.hostName = 'amccannv';
-	playlist.playlistName = req.body.playlistName;
-	// TO DO SAVE PLAYLIST WHEN CREATING
-	// message.save(function(err, message) {
-	// 	if (err){
-	// 		return res.send(500, err);
-	// 	}
-	// 	return res.json(message);
-	// });
-	spotifyApi.createPlaylist('amccannv', 'Test', {public: true})
+	playlist.hostName = req.query.hostName;
+	playlist.playlistName = req.query.playlistName;
+
+	// actually create playlist into host's Spotify account
+	spotifyApi.createPlaylist(playlist.hostName, playlist.playlistName, {public: true})
 		.then(function(data) {
 			console.log('Playlist created!');
-			return res.json(data.body);
+			playlist.playlistID = data.body['id'];
+
+			console.log(data.body);
+			// save playlist into mongo
+			playlist.save(function(err, message) {
+				if (err){
+					res.send(500, err);
+				}
+				res.json(message);
+			});
+
+			//return res.json(data.body);
 		}).catch(function(err) {
 			console.log('Something went wrong!', err.message);
-			return res.send(500).send(err);
+			res.send(500).send(err);
 		});
+
 });
 
-router.post('/addTrack', function(req, res) {
+// add track to playlist
+router.get('/addTrack', function(req, res) {
 
-	// create playlist
-	Playlist.find({playlistName: req.body.playlistName}, function (err, playlist){
+
+	console.log(req.query.playlistID);
+	Playlist.find({playlistID: req.query.playlistID}, function (err, playlist){
 		if(err)
 			res.send(err);
-		//var playlistID = playlist[0].playlistID;
 		console.log(playlist);
+		playlist = playlist[0];
+		spotifyApi.addTracksToPlaylist(playlist.hostName, playlist.playlistID, [req.query.trackID])
+			.then(function(data) {
+				console.log('Song added!');
+				res.send('All good.');
+			}).catch(function(err) {
+				console.log('Something went wrong!', err.message);
+				res.send(err);
+			});
 	});
-	return spotifyApi.addTracksToPlaylist('amccannv', 'spotify:user:amccannv:playlist:6q3S0ouSoYMLC7tDPOFdl8', 'spotify:track:62dpuFjYSBBshX8C65oOm3')
-		.then(function(data) {
-			console.log('Song added!');
-			return res.json(data.body);
-		}).catch(function(err) {
-			console.log('Something went wrong!', err.message);
-			return res.send(500).send(err);
-		});
+
 });
 
 module.exports = router;
