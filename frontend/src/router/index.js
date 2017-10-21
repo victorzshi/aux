@@ -4,7 +4,6 @@ import HelloWorld from '@/components/HelloWorld'
 
 Vue.use(Router)
 
-
 /* Containers */
 import home from '../containers/home.vue'
 import room from '../containers/room.vue'
