@@ -21,7 +21,7 @@ spotifyApi = new SpotifyWebApi({
 
 // Get models.
 var mongoose = require('mongoose');                      //add for Mongo support
-mongoose.connect('mongodb://localhost/Aux');        //connect to Mongo database
+mongoose.connect('mongodb://amccannv:basementhacks2017@ds227565.mlab.com:27565/auxdatabase');        //connect to Mongo database
 require('./models/playlist');
 
 // Generate variables for routes
