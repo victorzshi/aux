@@ -7,7 +7,7 @@
         <!-- Left side -->
         <div class="level-left">
           <div class="level-item">
-            <a href="#"><h1 class="title">Aux</h1></a>
+            <a href="#"><img id="aux_logo" src="../assets/aux_logo.svg"/></a>
           </div>
         </div>
         <!-- Right side -->
@@ -154,6 +154,10 @@
 
 .hero-head {
   margin-top: 2.5%;
+}
+
+#aux_logo {
+  max-width: 128px;
 }
 
 #buttons {
