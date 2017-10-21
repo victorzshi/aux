@@ -62,7 +62,7 @@ router.get('/addTrack', function(req, res) {
 		song.upvotes = 0;
 
 		playlist.songs.push(song);
-
+		playlist.save();
 		console.log(playlist);
 		spotifyApi.addTracksToPlaylist(playlist.hostName, playlist.playlistID, [req.query.trackID])
 			.then(function(data) {
