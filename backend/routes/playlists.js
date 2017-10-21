@@ -8,21 +8,19 @@ var Playlist = mongoose.model('Playlist');
 
 var router = express.Router();
 
+// create playlist
 router.get('/create', function(req, res) {
 
-	// create playlist
-
-	print('yo');
 	var playlist = new Playlist();
 	playlist.hostName = 'amccannv';
 	// TO DO SAVE PLAYLIST WHEN CREATING
-	message.save(function(err, message) {
-		if (err){
-			return res.send(500, err);
-		}
-		return res.json(message);
-	});
-	return spotifyApi.createPlaylist('amccannv', 'Test', {public: true})
+	// message.save(function(err, message) {
+	// 	if (err){
+	// 		return res.send(500, err);
+	// 	}
+	// 	return res.json(message);
+	// });
+	spotifyApi.createPlaylist('amccannv', 'Test', {public: true})
 		.then(function(data) {
 			console.log('Playlist created!');
 			return res.json(data.body);

@@ -6,9 +6,14 @@ var SpotifyWebApi = require('spotify-web-api-node');
 
 var router = express.Router();
 
-var client_id = process.env.CLIENT_ID; // Your client id
-var client_secret = process.env.CLIENT_SECRET; // Your secret
-var redirect_uri = process.env.REDIRECT_URI; // Your redirect uri
+var client_id = '2421a4b55e5c457eb279cacbacb9d318'; // Your client id
+var client_secret = '97d2682f52c44db6ab68a812d72e59c0'; // Your secret
+var redirect_uri = 'http://localhost:3000/users/callback'; // Your redirect uri
+spotifyApi = new SpotifyWebApi({
+	clientId : client_id,
+	clientSecret : client_secret,
+	redirectUri : redirect_uri
+});
 
 /**
  * Generates a random string containing numbers and letters
