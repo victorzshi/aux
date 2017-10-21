@@ -4,8 +4,16 @@ var querystring = require('querystring');
 var SpotifyWebApi = require('spotify-web-api-node');
 var mongoose = require('mongoose');
 var Playlist = mongoose.model('Playlist');
+var Song = mongoose.model('Song');
 
 var router = express.Router();
+
+function sortByKey(array, key) {
+	return array.sort(function(a, b) {
+		var x = a[key]; var y = b[key];
+		return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+	});
+}
 
 // create playlist
 router.get('/create', function(req, res) {
@@ -13,14 +21,15 @@ router.get('/create', function(req, res) {
 	var playlist = new Playlist();
 	playlist.hostName = req.query.hostName;
 	playlist.playlistName = req.query.playlistName;
+	playlist.songs = [];
 
 	// actually create playlist into host's Spotify account
 	spotifyApi.createPlaylist(playlist.hostName, playlist.playlistName, {public: true})
 		.then(function(data) {
 			console.log('Playlist created!');
 			playlist.playlistID = data.body['id'];
+			console.log(playlist);
 
-			console.log(data.body);
 			// save playlist into mongo
 			playlist.save(function(err, message) {
 				if (err){
@@ -47,6 +56,14 @@ router.get('/addTrack', function(req, res) {
 			res.send(err);
 		console.log(playlist);
 		playlist = playlist[0];
+
+		var song = new Song();
+		song.songID = req.query.trackID;
+		song.upvotes = 0;
+
+		playlist.songs.push(song);
+
+		console.log(playlist);
 		spotifyApi.addTracksToPlaylist(playlist.hostName, playlist.playlistID, [req.query.trackID])
 			.then(function(data) {
 				console.log('Song added!');
