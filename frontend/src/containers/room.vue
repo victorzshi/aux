@@ -1,88 +1,138 @@
 <template>
-<div class="container">
+<div id="page_container" class="container">
 
-<!-- Search Bar --> 
-<section>
-  <p class="control has-icons-left">
-    <input v-model.trim="search_text" class="input is-primary is-large" type="text" placeholder="Search">
-    <span class="icon is-left">
-      <i class="fa fa-search"></i>
-    </span>
-  </p>
-</section>
+<div id="body_container">
 
-<!-- Search Dropdown -->
-<section v-if="search_text" class="search-results">
-  <table class="table is-fullwidth is-hoverable">
-    <tbody>
-      <tr v-for="result in search_results" v-on:click="postSong(result)">
-        <td>
-          <img class="is-square" v-bind:src="result.images">
-          <span>
-            <strong>{{result.song}} </strong>{{result.artist}}
-          </span>
-
-          <span class="icon is-medium">
-            <i class="fa fa-2x fa-plus-circle"></i>
-          </span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <p v-if="!songs || !songs.length">The queue is currently empty</p>
-</section>  
-
-<!-- Current Song -->
-<section v-if="!search_text">
-  
-  <h1 class="title is-2">Current Song</h1>
-  <article class="media current-song">
-    <figure class="media-left">
-      <p class="image is-64x64">
-        <img src="https://bulma.io/images/placeholders/128x128.png">
+  <!-- Search Bar --> 
+  <section>
+    <div class="container">
+      <p class="control has-icons-left">
+        <input v-model.trim="search_text" class="input is-primary is-large has-text-centered" type="text" placeholder="Search">
+        <span class="icon is-left">
+          <i class="fa fa-search"></i>
+        </span>
       </p>
-    </figure>
-    <div class="media-content">
-      <div class="content">
-        <p>
-          <div v-if="current_song">
-            <strong>Song</strong><br>Artist
-          </div>
-          <div v-else>
-            No song is currently playing
-          </div>
-        </p>
-      </div>
+    </div>
+  </section>
+
+  <!-- Search Dropdown -->
+  <section v-if="search_text" class="search-results">
+    <div class="container">
+      <table class="table is-fullwidth is-hoverable">
+        <tbody>
+          <tr v-for="result in search_results" v-on:click="postSong(result)">
+            <td>
+              <img class="is-square" v-bind:src="result.images">
+              <span>
+                <strong>{{result.song}} </strong>{{result.artist}}
+              </span>
+
+              <span class="icon is-medium">
+                <i class="fa fa-2x fa-plus-circle"></i>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p v-if="!songs || !songs.length">The queue is currently empty</p>
+      
+    </div>
+  </section>  
+
+
+
+  <!-- Voting Queue -->
+  <section v-if="!search_text">
+
+    <div class="container">
+
+      <h1 class="title is-2 has-text-centered">Up Next</h1>
+      <table class="table is-fullwidth is-hoverable">
+        <tbody>
+          <tr v-for="song in songs">
+            <td>
+              <span class="icon is-medium" v-on:click="upvoteSong(song)">
+                <i class="fa fa-2x fa-arrow-circle-up"></i>
+              </span>
+              <strong>{{song.song}} </strong>{{song.artist}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="has-text-centered" v-if="!search_results || !search_results.length">The queue is currently empty</p>
+      
     </div>
 
-  </article>
+  </section>
 
-</section>  
+</div>
 
-<!-- Voting Queue -->
-<section v-if="!search_text">
+<!-- Footer -->
 
-  <h1 class="title is-2">Song Queue</h1>
-  <table class="table is-fullwidth is-hoverable">
-    <tbody>
-      <tr v-for="song in songs">
-        <td>
-          <span class="icon is-medium" v-on:click="upvoteSong(song)">
-            <i class="fa fa-2x fa-arrow-circle-up"></i>
-          </span>
-          <strong>{{song.song}} </strong>{{song.artist}}
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <p v-if="!search_results || !search_results.length">The queue is currently empty</p>
+<div id="footer_container">
+  <!-- Current Song -->
+  <section v-if="!search_text">
+    
+    <div class="container is-centered">
+      
+      <h1 class="title is-2 has-text-centered">Now Playing</h1>
+      <article class="media current-song">
+        <figure class="media-left">
+          <p class="image is-64x64">
+            <img src="https://bulma.io/images/placeholders/128x128.png">
+          </p>
+        </figure>
+        <div class="media-content">
+          <div class="content">
+            <p>
+              <div v-if="current_song">
+                <strong>Song</strong><br>Artist
+              </div>
+              <div v-else>
+                No song is currently playing
+              </div>
+            </p>
+          </div>
+        </div>
+      </article>
 
-</section>
+    </div>
+
+  </section>  
+  
+</div>
 
 </div>
 </template>
 
 <style scoped>
+
+/* Delete this shit later, and html tags */
+
+/*body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+#page_container {
+  min-height: 100%;
+  position: relative;
+}
+
+#body_container {
+  padding-bottom: 60px;
+}
+
+#footer_container {
+  bottom: 0;
+  height: 60px;
+}*/
+
+input {
+  border-radius: 100px;
+}
 
 .container {
   padding: 0.5em;
