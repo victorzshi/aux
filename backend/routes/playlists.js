@@ -121,36 +121,33 @@ router.get('/create', function(req, res) {
 
 });
 
-// search for a song
+// search for a song based on given input
 router.get('/search', function(req, res) {
-		// Search tracks whose name, album or artist contains the variable we input
-		var info = 'drugs';
-		spotifyApi.searchTracks(req.query.searchQuery)
-		  .then(function(data) {
+
+	spotifyApi.searchTracks(req.query.searchQuery)
+		.then(function(data) {
 		    console.log('Search by: ', req.query.searchQuery);
 		    var Parsing = data.body;
 		    var listToParse = Parsing.tracks.items;
-		    console.log(listToParse);
-		    finalData = [];
-		     for(songs in listToParse){
-			    	var lists = listToParse[songs];
-			    	var artistsList = lists.album.artists[0];
-			    	artists = artistsList.name;
-			    	var songName = lists.name;
-			    	var uri = lists.uri;
-			    	var images = lists.album.images[2];
-			    	var url = images.url;
-			    	var id = lists.id;
-			    	var InfoNeeded = {
-			    		'artist': artists,
-			    		'song' : songName,
-			    		'uri' : uri,
-			    		'images' : url,
-			    		'id' : id
-			    	};
-			    	finalData.push(InfoNeeded);
-			    	//var artist = artistsList['artists']['name'];
-			    	}
+		    var finalData = [];
+		    for(songs in listToParse) {
+		    	var lists = listToParse[songs];
+				var artistsList = lists.album.artists[0];
+				var artists = artistsList.name;
+				var songName = lists.name;
+				var uri = lists.uri;
+				var images = lists.album.images[2];
+				var url = images.url;
+				var id = lists.id;
+				var infoNeeded = {
+					'artist': artists,
+					'song' : songName,
+					'uri' : uri,
+					'images' : url,
+					'id' : id
+				};
+				finalData.push(infoNeeded);
+			}
 		    res.send(finalData);
 		  }, function(err) {
 		    console.error(err);
