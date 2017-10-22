@@ -52,7 +52,7 @@
 
             <!-- Join existing room submit button -->
             <div class="column">
-              <a class="button is-dark is-inverted is-large">
+              <a v-on:click="goToRoom" class="button is-dark is-inverted is-large">
                 <!-- For icon -->
                 <!-- <span class="icon is-medium">
                   <i class="fa fa-github"></i>
@@ -181,6 +181,9 @@
 </style>
 
 <script>
+
+import router from '../router'
+
 export default {
   name: 'home',
   components: { },

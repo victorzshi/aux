@@ -27,7 +27,7 @@
       </div>
       <div class="level-item">
         <p class="subtitle is-5">
-          Code: <a>{{room.code}}</a><!-- LINK TO ROOM --> 
+          Code: <a v-on:click="goToRoom(room.code)">{{room.code}}</a>
         </p>
       </div>
     </div>
@@ -51,6 +51,7 @@
 <script>
 
 import api from '../api'
+import router from '../router'
 
 export default {
   name: 'home',
@@ -69,6 +70,9 @@ export default {
   methods: {
     fetchRooms (account) {
       
+    },
+    goToRoom () {
+      router.push({ name: 'room', params: { id: this.room_code }})
     },
     createRoom (room) {
       // send song's id to backend
