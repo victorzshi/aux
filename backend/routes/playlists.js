@@ -32,6 +32,26 @@ var generateRandomString = function(length) {
 	return text;
 };
 
+// get playlist based on Aux code
+router.get('/getPlaylist', function(req, res) {
+
+	var auxCode = req.query.auxCode;
+
+	Playlist.find({auxCode: auxCode}, function (err, playlist) {
+		if(err)
+			res.send(err);
+		console.log(playlist);
+		playlist = playlist[0];
+
+		if (playlist != null) {
+			res.json(playlist);
+		} else {
+			res.send('No playlist yet.');
+		}
+	});
+
+});
+
 // create playlist
 router.get('/create', function(req, res) {
 
@@ -42,7 +62,7 @@ router.get('/create', function(req, res) {
 	playlist.songQueue = [];
 	playlist.auxCode = generateRandomString(6);
 
-	// actually create playlist into host's Spotify account
+	// actually create playlist into hreq.query.playlistIDost's Spotify account
 	spotifyApi.createPlaylist(playlist.hostName, playlist.playlistName, {public: true})
 		.then(function(data) {
 			console.log('Playlist created!');
@@ -52,11 +72,11 @@ router.get('/create', function(req, res) {
 			// save playlist into mongo
 			playlist.save(function(err, message) {
 				if (err){
-					res.send(500, err);
+					res.send(500, err);req.query.playlistID
 				}
 				res.json(message);
 			});
-			
+
 		}).catch(function(err) {
 			console.log('Something went wrong!', err.message);
 			res.send(500).send(err);
