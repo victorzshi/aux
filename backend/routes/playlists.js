@@ -73,6 +73,22 @@ router.get('/getPlaylist', function(req, res) {
 
 });
 
+// get playlist based on Aux code
+router.use('/getUsersPlaylists', isAuthenticated);
+router.get('/getUsersPlaylists', function(req, res) {
+
+	var hostName = req.user.username;
+
+	Playlist.findOne({hostName: hostName}, function (err, playlist) {
+		if(err)
+			res.send(err);
+		console.log(playlist);
+
+		res.json(playlist);
+	});
+
+});
+
 // create playlist
 router.use('/create', isAuthenticated);
 router.get('/create', function(req, res) {
