@@ -27,7 +27,6 @@ spotifyApi = new SpotifyWebApi({
 //   and deserialized.
 passport.serializeUser(function(user, done) {
 	done(null, user);
-	console.log(user);
 });
 
 passport.deserializeUser(function(obj, done) {
@@ -56,12 +55,9 @@ passport.use(new SpotifyStrategy({
 	}
 ));
 
-router.get('/account', ensureAuthenticated, function(req, res){
-	res.render('account.html', { user: req.user });
-});
-
-router.get('/login', function(req, res){
-	res.render('login.html', { user: req.user });
+router.get('/account/rooms/', ensureAuthenticated, function(req, res){
+	res.send('User\'s Rooms');
+	// Return json of rooms of account
 });
 
 // GET /auth/spotify
@@ -85,7 +81,7 @@ router.get('/callback',
 	passport.authenticate('spotify', { failureRedirect: '/' }),
 	function(req, res) {
 		console.log("*****AUTHENTICATE 2");
-		res.redirect('/account');
+		res.redirect('../account/');
 	});
 
 router.get('/logout', function(req, res){
@@ -104,7 +100,7 @@ function ensureAuthenticated(req, res, next) {
 		return next();
 	}
 	console.log('Authentication failed');
-	res.redirect('/login');
+	res.redirect('/');
 }
 
 // /**
