@@ -82,6 +82,39 @@ router.get('/create', function(req, res) {
 
 });
 
+//search for a song
+router.get('/search', function(req, res) {
+		// Search tracks whose name, album or artist contains the variable we input
+		var info = 'drugs';
+		spotifyApi.searchTracks(info)
+		  .then(function(data) {
+		    console.log('Search by: ', info);
+		    var Parsing = data.body;
+		    var listToParse = Parsing.tracks.items;
+		    finalData = [];
+		     for(songs in listToParse){
+			    	var lists = listToParse[songs];
+			    	var artistsList = lists.album.artists[0];
+			    	artists = artistsList.name;
+			    	var songName = lists.name;
+			    	var uri = lists.uri;
+			    	var images = lists.album.images[2];
+			    	var url = images.url;
+			    	var InfoNeeded = {
+			    		'artist': artists,
+			    		'song' : songName,
+			    		'uri' : uri,
+			    		'images' : url
+			    	}
+			    	finalData.push(InfoNeeded);
+			    	//var artist = artistsList['artists']['name'];
+			    	}
+		    res.send(finalData);
+		  }, function(err) {
+		    console.error(err);
+		  });
+});
+
 // add track to queue
 router.get('/addTrackToQueue', function(req, res) {
 
