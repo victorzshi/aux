@@ -139,9 +139,9 @@ export default {
 
       socket.connect((new_q) => {
         // this.
-      }, (new_song) => {
+      }, (close) => {
 
-      }, (exit) => {
+      }, (error) => {
 
       })
       // Connect with backend

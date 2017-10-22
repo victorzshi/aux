@@ -14,12 +14,14 @@ export default {
 
   },
 
+  getRooms () {
+
+  },
+
   getSongSearchResults (context, search_text, callback) {
 
     let body = { };
-
     context.$http.post(api.song_search_url, body).then(callback);
-
   },
 
   addSong (context, song_id, callback) {
@@ -27,10 +29,6 @@ export default {
     let body = { };
 
     context.$http.post(api.song_search_url, body).then(callback);
-
-  },
-
-  fetchRoom (context, room_code, callback) {
 
   }
 }

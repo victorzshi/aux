@@ -32,12 +32,12 @@
 
             <!-- Create room button -->
             <div class="column">
-              <a class="button is-dark is-inverted is-large">
+              <a href="/users/login" class="button is-dark is-inverted is-large">
                 <!-- For icon -->
                 <!-- <span class="icon is-medium">
                   <i class="fa fa-github"></i>
                 </span> -->
-                <span>Create</span>
+                <span>Login</span>
               </a>
             </div>
 
@@ -45,7 +45,7 @@
             <div id="room_entry_field" class="columns is-centered">
               <div class="column is-two-thirds field">
                 <div class="control">
-                  <input class="input is-medium has-text-centered" type="text" placeholder="Room Code">
+                  <input v-model="room_code" class="input is-medium has-text-centered" type="text" placeholder="Room Code">
                 </div>
               </div>
             </div>
@@ -186,7 +186,7 @@ export default {
   components: { },
   data () {
     return {
-
+      room_code: ''
     }
   },
   created () {
@@ -194,10 +194,7 @@ export default {
   },
   methods: {
     goToRoom () {
-
-    },
-    createRoom () {
-
+      router.push({ name: 'room', params: { id: this.room_code }})
     }
   }
 
