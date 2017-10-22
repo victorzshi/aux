@@ -1,15 +1,19 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 
 Vue.use(Router)
 
+/* Containers */
+import home from '../containers/home.vue'
+import room from '../containers/room.vue'
+import account from '../containers/account.vue'
+
 export default new Router({
+  mode: 'history',
   routes: [
-    {
-      path: '/',
-      name: 'Hello',
-      component: HelloWorld
-    }
+    { path: '/', name: 'home', component: home },
+    { path: '/room/:id', name: 'room', component: room },
+    { path: '/account/:id', name: 'account', component: account },
+    { path: '*', redirect: '/' }
   ]
 })
