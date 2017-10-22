@@ -178,7 +178,6 @@ router.get('/upvoteSong', function(req, res) {
 // add track to playlist
 router.get('/addTrackToPlaylist', function(req, res) {
 
-
 	console.log(req.query.playlistID);
 	Playlist.find({playlistID: req.query.playlistID}, function (err, playlist) {
 		if(err)
@@ -189,15 +188,10 @@ router.get('/addTrackToPlaylist', function(req, res) {
 		var songQueue = playlist.songQueue;
 
 		// add to songs, remove from song queue
-		for (var i = 0; i < songQueue.length; i++) {
-			if (songQueue[i].songID == req.query.trackID) {
-				var song = songQueue[i];
-				playlist.songs.push(song);
-				playlist.songQueue.splice(index, i);
-				playlist.save();
-			}
-		}
-
+		var song = songQueue[songQueue.length - 1];
+		playlist.songs.push(song);
+		playlist.songQueue.splice(index, songQueue.length - 1);
+		
 		playlist.save();
 		console.log(playlist);
 		spotifyApi.addTracksToPlaylist(playlist.hostName, playlist.playlistID, [req.query.trackID])
