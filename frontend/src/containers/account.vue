@@ -11,7 +11,7 @@
             <input v-model.trim="new_room_name" class="input is-primary"
               type="text" placeholder="New Room Name">
           </p>
-          <p class="control"><a class="button" v-on:click="createRoom">Create</a></p>
+          <p class="control"><a class="button" v-on:click="createRoom(new_room_name)">Create</a></p>
         </div>
       </div>
     </div>
@@ -61,9 +61,7 @@ export default {
   components: { },
   data () {
     return {
-      rooms: [
-        {name: 'hi', code: 'kjnldkfn'},
-        {name: 'hi', code: 'kjnldkfn'}],
+      rooms: [],
       new_room_name: ''
     }
   },
@@ -77,13 +75,15 @@ export default {
     goToRoom () {
       router.push({ name: 'room', params: { id: this.room_code }})
     },
-    createRoom (room) {
+    createRoom (name) {
       // send song's id to backend
-      api.createRoom(this, new_room_name, (rooms) => {
 
-      })
-
-      new_room_name = ''
+      if (name != '') {
+        api.createRoom(this, name, (rooms) => {
+          console.log(rooms)
+          this.new_room_name = ''
+        })
+      }
     },
     deleteRoom (id) {
       // send song's id to backend

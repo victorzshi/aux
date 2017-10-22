@@ -14,14 +14,14 @@ const api = {
 export default {
 
   /* USER */
-  createRoom () {
-    let body = { };
+  createRoom (context, playlist_name, callback) {
+    let body = { params: { playlistName: playlist_name } };
     context.$http.get(api.song_search_url, body).then(callback);
   },
 
   getRooms () {
     let body = { };
-    context.$http.get(api.song_search_url, body).then(callback);
+    context.$http.get(api.get_rooms_url, body).then(callback);
   },
 
   /* ROOM */
