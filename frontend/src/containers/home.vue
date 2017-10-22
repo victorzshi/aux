@@ -32,7 +32,7 @@
 
             <!-- Create room button -->
             <div class="column">
-              <a href="/users/login" class="button is-dark is-inverted is-large">
+              <a href="/users/auth/spotify" class="button is-dark is-inverted is-large">
                 <!-- For icon -->
                 <!-- <span class="icon is-medium">
                   <i class="fa fa-github"></i>

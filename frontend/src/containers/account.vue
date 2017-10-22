@@ -32,6 +32,9 @@
       </div>
     </div>
   </nav>
+  <a href="/users/logout" class="button is-dark is-inverted is-large">
+    Logout
+  </a>  
 </section>
 
 </div>
