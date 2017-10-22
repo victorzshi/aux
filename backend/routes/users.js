@@ -82,9 +82,10 @@ router.get('/auth/spotify',
 //   login page. Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
 router.get('/callback',
-	passport.authenticate('spotify', { failureRedirect: '/login' }),
+	passport.authenticate('spotify', { failureRedirect: '/' }),
 	function(req, res) {
-		res.redirect('/');
+		console.log("*****AUTHENTICATE 2");
+		res.redirect('/account');
 	});
 
 router.get('/logout', function(req, res){
@@ -98,7 +99,11 @@ router.get('/logout', function(req, res){
 //   the request will proceed. Otherwise, the user will be redirected to the
 //   login page.
 function ensureAuthenticated(req, res, next) {
-	if (req.isAuthenticated()) { return next(); }
+	if (req.isAuthenticated()) { 
+		console.log('Authentication success');
+		return next();
+	}
+	console.log('Authentication failed');
 	res.redirect('/login');
 }
 

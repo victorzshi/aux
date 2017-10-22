@@ -34,10 +34,10 @@ var playlists = require('./routes/playlists');
 
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.engine('html', require('ejs').renderFile);
-app.set('view engine', 'html');
+// // view engine setup
+// app.set('views', path.join(__dirname, 'views'));
+// app.engine('html', require('ejs').renderFile);
+// app.set('view engine', 'html');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -53,9 +53,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Redirect routes to the controllers.
-app.use('/', index);
+app.use('/', express.static('public'));
 app.use('/users', users);
 app.use('/playlists', playlists);
+app.use('*', index);
 //app.use(express.static('./routes'));
 
 // catch 404 and forward to error handler
