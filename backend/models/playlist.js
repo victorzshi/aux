@@ -11,6 +11,7 @@ mongoose.model('Song', songSchema);
 var playlistSchema = new mongoose.Schema({
 	hostName: String,
 	playlistID: String,
+	auxCode: String,
 	playlistName: String,
 	songs: [songSchema],
 	songQueue: [songSchema]

@@ -8,6 +8,7 @@ var Song = mongoose.model('Song');
 
 var router = express.Router();
 
+// sort array by key value
 function sortByKey(array) {
 	array.sort(function(a, b){
 		var keyA = (a.upvotes),
@@ -20,6 +21,17 @@ function sortByKey(array) {
 	return array;
 }
 
+// generate random string for Aux code
+var generateRandomString = function(length) {
+	var text = '';
+	var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+	for (var i = 0; i < length; i++) {
+		text += possible.charAt(Math.floor(Math.random() * possible.length));
+	}
+	return text;
+};
+
 // create playlist
 router.get('/create', function(req, res) {
 
@@ -28,6 +40,24 @@ router.get('/create', function(req, res) {
 	playlist.playlistName = req.query.playlistName;
 	playlist.songs = [];
 	playlist.songQueue = [];
+
+	var newCode = false;
+	var auxCode = generateRandomString(4);
+
+	while(newCode == false) {
+		console.log('in loop');
+		Playlist.find({auxCode: auxCode}, function (err, playlist){
+			if(err)
+				res.send(err);
+			console.log(playlist);
+			// if(playlist[0]) {
+			// 	newCode = true;
+			// 	auxCode = generateRandomString(4);
+			// }
+		});
+	}
+
+	playlist.auxCode = auxCode;
 
 	// actually create playlist into host's Spotify account
 	spotifyApi.createPlaylist(playlist.hostName, playlist.playlistName, {public: true})
@@ -62,23 +92,25 @@ router.get('/addTrackToQueue', function(req, res) {
 		console.log(playlist);
 		playlist = playlist[0];
 
+		var songQueue = playlist.songQueue;
+
 		// check if song is in queue before adding
 		for (var i = 0; i < songQueue.length; i++) {
 			if (songQueue[i].songID == req.query.trackID) {
 				res.send('Song already in queue.');
 			}
-			else {
-				var song = new Song();
-				song.songID = req.query.trackID;
-				song.upvotes = 0;
-
-				playlist.songQueue.push(song);
-				playlist.save();
-				console.log(playlist);
-
-				res.send('Song added to queue.');
-			}
 		}
+
+		// if not in queue, add to queue
+		var song = new Song();
+		song.songID = req.query.trackID;
+		song.upvotes = 0;
+
+		playlist.songQueue.push(song);
+		playlist.save();
+		console.log(playlist);
+
+		res.send('Song added to queue.');
 	});
 
 });
@@ -119,11 +151,18 @@ router.get('/addTrackToPlaylist', function(req, res) {
 		console.log(playlist);
 		playlist = playlist[0];
 
-		var song = new Song();
-		song.songID = req.query.trackID;
-		song.upvotes = 0;
+		var songQueue = playlist.songQueue;
 
-		playlist.songs.push(song);
+		// add to songs, remove from song queue
+		for (var i = 0; i < songQueue.length; i++) {
+			if (songQueue[i].songID == req.query.trackID) {
+				var song = songQueue[i];
+				playlist.songs.push(song);
+				playlist.songQueue.splice(index, i);
+				playlist.save();
+			}
+		}
+
 		playlist.save();
 		console.log(playlist);
 		spotifyApi.addTracksToPlaylist(playlist.hostName, playlist.playlistID, [req.query.trackID])
