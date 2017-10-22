@@ -12,15 +12,19 @@
 </section>
 
 <!-- Search Dropdown -->
-<section v-if="search_text">
+<section v-if="search_text" class="search-results">
   <table class="table is-fullwidth is-hoverable">
     <tbody>
       <tr v-for="song in songs">
         <td>
-          <span class="icon is-medium">
-            <i class="fa fa fa-2x fa-plus-circle"></i>
+          <img class="is-square" src="https://bulma.io/images/placeholders/128x128.png">
+          <span>
+            <strong>{{song.title}} </strong>{{song.artist}}
           </span>
-          <strong>{{song.title}} </strong>{{song.artist}}
+
+          <span class="icon is-medium">
+            <i class="fa fa-2x fa-plus-circle"></i>
+          </span>
         </td>
       </tr>
     </tbody>
@@ -63,8 +67,8 @@
     <tbody>
       <tr v-for="result in search_results">
         <td>
-          <span class="icon is-medium" v-click="upvoteSong(result)">
-            <i class="fa fa fa-2x fa-arrow-circle-up"></i>
+          <span class="icon is-medium" v-on:click="upvoteSong(result)">
+            <i class="fa fa-2x fa-arrow-circle-up"></i>
           </span>
           <strong>{{result.title}} </strong>{{result.artist}}
         </td>
@@ -97,7 +101,17 @@ td {
   overflow: hidden;
   white-space: nowrap;
   padding: 0.5em;
-  vertical-align: middle;
+}
+
+.search-results .icon i {
+  position: absolute;
+  right: 0.5em;
+  margin-top: 0.1em;
+}
+
+.search-results td img {
+  width: 32px;
+  height: 32px;
 }
 
 </style>
