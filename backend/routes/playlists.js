@@ -190,11 +190,11 @@ router.get('/addTrackToPlaylist', function(req, res) {
 		// add to songs, remove from song queue
 		var song = songQueue[songQueue.length - 1];
 		playlist.songs.push(song);
-		playlist.songQueue.splice(index, songQueue.length - 1);
-		
+		playlist.songQueue.splice(songQueue.length - 1, 1);
+
 		playlist.save();
 		console.log(playlist);
-		spotifyApi.addTracksToPlaylist(playlist.hostName, playlist.playlistID, [req.query.trackID])
+		spotifyApi.addTracksToPlaylist(playlist.hostName, playlist.playlistID, [song.songID])
 			.then(function(data) {
 				console.log('Song added!');
 				res.send('All good.');
