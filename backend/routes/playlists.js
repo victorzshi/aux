@@ -8,11 +8,16 @@ var Song = mongoose.model('Song');
 
 var router = express.Router();
 
-function sortByKey(array, key) {
-	return array.sort(function(a, b) {
-		var x = a[key]; var y = b[key];
-		return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+function sortByKey(array) {
+	array.sort(function(a, b){
+		var keyA = (a.upvotes),
+			keyB = (b.upvotes);
+		// Compare the 2 dates
+		if(keyA < keyB) return -1;
+		if(keyA > keyB) return 1;
+		return 0;
 	});
+	return array;
 }
 
 // create playlist
@@ -22,6 +27,7 @@ router.get('/create', function(req, res) {
 	playlist.hostName = req.query.hostName;
 	playlist.playlistName = req.query.playlistName;
 	playlist.songs = [];
+	playlist.songQueue = [];
 
 	// actually create playlist into host's Spotify account
 	spotifyApi.createPlaylist(playlist.hostName, playlist.playlistName, {public: true})
@@ -46,12 +52,68 @@ router.get('/create', function(req, res) {
 
 });
 
-// add track to playlist
-router.get('/addTrack', function(req, res) {
-
+// add track to queue
+router.get('/addTrackToQueue', function(req, res) {
 
 	console.log(req.query.playlistID);
 	Playlist.find({playlistID: req.query.playlistID}, function (err, playlist){
+		if(err)
+			res.send(err);
+		console.log(playlist);
+		playlist = playlist[0];
+
+		// check if song is in queue before adding
+		for (var i = 0; i < songQueue.length; i++) {
+			if (songQueue[i].songID == req.query.trackID) {
+				res.send('Song already in queue.');
+			}
+			else {
+				var song = new Song();
+				song.songID = req.query.trackID;
+				song.upvotes = 0;
+
+				playlist.songQueue.push(song);
+				playlist.save();
+				console.log(playlist);
+
+				res.send('Song added to queue.');
+			}
+		}
+	});
+
+});
+
+// upvote song in given party queue
+router.get('/upvoteSong', function(req, res) {
+	Playlist.find({playlistID: req.query.playlistID}, function (err, playlist) {
+		if(err)
+			res.send(err);
+		console.log(playlist);
+		playlist = playlist[0];
+
+		var songQueue = playlist.songQueue;
+
+		for (var i = 0; i < songQueue.length; i++) {
+			if (songQueue[i].songID == req.query.trackID) {
+				songQueue[i].upvotes += 1;
+			}
+		}
+
+		playlist.songQueue = songQueue;
+		playlist.songQueue = sortByKey(playlist.songQueue);
+
+		console.log(playlist.songQueue);
+		playlist.save();
+		res.send('Song upvoted.');
+	});
+});
+
+// add track to playlist
+router.get('/addTrackToPlaylist', function(req, res) {
+
+
+	console.log(req.query.playlistID);
+	Playlist.find({playlistID: req.query.playlistID}, function (err, playlist) {
 		if(err)
 			res.send(err);
 		console.log(playlist);
