@@ -5,6 +5,9 @@ var SpotifyWebApi = require('spotify-web-api-node');
 var mongoose = require('mongoose');
 var Playlist = mongoose.model('Playlist');
 var Song = mongoose.model('Song');
+var session = require('express-session'),
+	passport = require('passport'),
+	SpotifyStrategy = require('passport-spotify').Strategy;
 
 var router = express.Router();
 
@@ -32,6 +35,24 @@ var generateRandomString = function(length) {
 	return text;
 };
 
+// authenticate user
+function isAuthenticated (req, res, next) {
+	// if user is authenticated in the session, call the next() to call the next request handler
+	// Passport adds this method to request object. A middleware is allowed to add properties to
+	// request and response objects
+
+	//allow all get request methods
+	if(req.method === "GET"){
+		return next();
+	}
+	if (req.isAuthenticated()){
+		return next();
+	}
+
+	// if the user is not authenticated then redirect him to the login page
+	return res.redirect('/#login');
+}
+
 // get playlist based on Aux code
 router.get('/getPlaylist', function(req, res) {
 
@@ -53,10 +74,11 @@ router.get('/getPlaylist', function(req, res) {
 });
 
 // create playlist
+router.use('/create', isAuthenticated);
 router.get('/create', function(req, res) {
 
 	var playlist = new Playlist();
-	playlist.hostName = req.query.hostName;
+	playlist.hostName = req.user.username;
 	playlist.playlistName = req.query.playlistName;
 	playlist.songs = [];
 	playlist.songQueue = [];
