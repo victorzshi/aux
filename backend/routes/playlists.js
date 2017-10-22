@@ -40,24 +40,7 @@ router.get('/create', function(req, res) {
 	playlist.playlistName = req.query.playlistName;
 	playlist.songs = [];
 	playlist.songQueue = [];
-
-	var newCode = false;
-	var auxCode = generateRandomString(4);
-
-	while(newCode == false) {
-		console.log('in loop');
-		Playlist.find({auxCode: auxCode}, function (err, playlist){
-			if(err)
-				res.send(err);
-			console.log(playlist);
-			// if(playlist[0]) {
-			// 	newCode = true;
-			// 	auxCode = generateRandomString(4);
-			// }
-		});
-	}
-
-	playlist.auxCode = auxCode;
+	playlist.auxCode = generateRandomString(6);
 
 	// actually create playlist into host's Spotify account
 	spotifyApi.createPlaylist(playlist.hostName, playlist.playlistName, {public: true})
@@ -73,8 +56,7 @@ router.get('/create', function(req, res) {
 				}
 				res.json(message);
 			});
-
-			//return res.json(data.body);
+			
 		}).catch(function(err) {
 			console.log('Something went wrong!', err.message);
 			res.send(500).send(err);
@@ -82,13 +64,13 @@ router.get('/create', function(req, res) {
 
 });
 
-//search for a song
+// search for a song
 router.get('/search', function(req, res) {
 		// Search tracks whose name, album or artist contains the variable we input
 		var info = 'drugs';
-		spotifyApi.searchTracks(info)
+		spotifyApi.searchTracks(req.query.searchQuery)
 		  .then(function(data) {
-		    console.log('Search by: ', info);
+		    console.log('Search by: ', req.query.searchQuery);
 		    var Parsing = data.body;
 		    var listToParse = Parsing.tracks.items;
 		    finalData = [];
@@ -105,7 +87,7 @@ router.get('/search', function(req, res) {
 			    		'song' : songName,
 			    		'uri' : uri,
 			    		'images' : url
-			    	}
+			    	};
 			    	finalData.push(InfoNeeded);
 			    	//var artist = artistsList['artists']['name'];
 			    	}
