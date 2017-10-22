@@ -79,7 +79,7 @@ router.get('/getUsersPlaylists', function(req, res) {
 
 	var hostName = req.user.username;
 
-	Playlist.findOne({hostName: hostName}, function (err, playlist) {
+	Playlist.find({hostName: hostName}, function (err, playlist) {
 		if(err)
 			res.send(err);
 		console.log(playlist);
