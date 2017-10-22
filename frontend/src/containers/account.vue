@@ -22,12 +22,12 @@
     <div class="level-left">
       <div class="level-item">
         <p class="subtitle is-5">
-          <strong>{{room.name}}</strong> 
+          <strong>{{room.playlistName}}</strong> 
         </p>
       </div>
       <div class="level-item">
         <p class="subtitle is-5">
-          Code: <a v-on:click="goToRoom(room.code)">{{room.code}}</a>
+          Code: <a v-on:click="goToRoom(room.auxCode)">{{room.auxCode}}</a>
         </p>
       </div>
     </div>
@@ -69,19 +69,22 @@ export default {
     this.fetchRooms()
   },
   methods: {
-    fetchRooms (account) {
-      
+    fetchRooms () {
+      api.getRooms(this, rooms => {
+        console.log(rooms)
+        this.rooms = rooms.body
+      })
     },
     goToRoom () {
       router.push({ name: 'room', params: { id: this.room_code }})
     },
     createRoom (name) {
       // send song's id to backend
-
       if (name != '') {
-        api.createRoom(this, name, (rooms) => {
+        api.createRoom(this, name, rooms => {
           console.log(rooms)
           this.new_room_name = ''
+          this.fetchRooms()
         })
       }
     },

@@ -15,11 +15,11 @@
 <section v-if="search_text" class="search-results">
   <table class="table is-fullwidth is-hoverable">
     <tbody>
-      <tr v-for="song in songs">
+      <tr v-for="result in search_results" v-on:click="postSong(result)">
         <td>
-          <img class="is-square" src="https://bulma.io/images/placeholders/128x128.png">
+          <img class="is-square" v-bind:src="result.images">
           <span>
-            <strong>{{song.title}} </strong>{{song.artist}}
+            <strong>{{result.song}} </strong>{{result.artist}}
           </span>
 
           <span class="icon is-medium">
@@ -65,12 +65,12 @@
   <h1 class="title is-2">Song Queue</h1>
   <table class="table is-fullwidth is-hoverable">
     <tbody>
-      <tr v-for="result in search_results">
+      <tr v-for="song in songs">
         <td>
-          <span class="icon is-medium" v-on:click="upvoteSong(result)">
+          <span class="icon is-medium" v-on:click="upvoteSong(song)">
             <i class="fa fa-2x fa-arrow-circle-up"></i>
           </span>
-          <strong>{{result.title}} </strong>{{result.artist}}
+          <strong>{{song.song}} </strong>{{song.artist}}
         </td>
       </tr>
     </tbody>
@@ -127,7 +127,7 @@ export default {
   data () {
     return {
       room_code: null,
-      room_id: null,
+      room: null,
       current_song: null,
       search_text: '',
       songs: [],
@@ -135,30 +135,27 @@ export default {
     }
   },
   created () {
+    this.room_code = this.$route.params.id
     this.fetchRoom()
   },
   methods: {
     getSearchResults (search_string) {
-      api.getSongSearchResults (this, search_string, response => {
-        console.log(response.body)
+      api.getSongSearchResults (this, search_string, success => {
+        this.search_results = success.body
+        console.log(success.body)
       })
     },
-    fetchRoom (code) {
-      this.room_code = this.$route.params.id
-
-      // socket.connect((new_q) => {
-      //   // this.
-      // }, (close) => {
-
-      // }, (error) => {
-
-      // })
-      // Connect with backend
+    fetchRoom () {
+      api.updateRoom(this, this.room_code, success => {
+        this.room = success.body
+        console.log(success.body)
+      })
     },
     postSong (song) {
-      // send song's id to backend
-
-      search_text = ''
+      api.addSong(this, this.room.playlistID, song.id, success => {
+        this.fetchRoom()
+        this.search_text = ''
+      })
     },
     upvoteSong () {
 

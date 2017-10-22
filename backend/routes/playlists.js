@@ -62,7 +62,6 @@ router.get('/getPlaylist', function(req, res) {
 		if(err)
 			res.send(err);
 		console.log(playlist);
-		playlist = playlist[0];
 
 		if (playlist != null) {
 			res.json(playlist);
@@ -131,6 +130,7 @@ router.get('/search', function(req, res) {
 		    console.log('Search by: ', req.query.searchQuery);
 		    var Parsing = data.body;
 		    var listToParse = Parsing.tracks.items;
+		    console.log(listToParse);
 		    finalData = [];
 		     for(songs in listToParse){
 			    	var lists = listToParse[songs];
@@ -140,11 +140,13 @@ router.get('/search', function(req, res) {
 			    	var uri = lists.uri;
 			    	var images = lists.album.images[2];
 			    	var url = images.url;
+			    	var id = lists.id;
 			    	var InfoNeeded = {
 			    		'artist': artists,
 			    		'song' : songName,
 			    		'uri' : uri,
-			    		'images' : url
+			    		'images' : url,
+			    		'id' : id
 			    	};
 			    	finalData.push(InfoNeeded);
 			    	//var artist = artistsList['artists']['name'];

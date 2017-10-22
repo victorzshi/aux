@@ -3,12 +3,12 @@
 
 const url = 'http://localhost:3000/';
 const api = {
-  create_room_url: url + 'playlists/create',
-  get_rooms_url: url + 'users/account/',
-  song_search_url: url + 'playlists/search',
-  song_add_url: url + 'playlists/addTrackToQueue',
-  song_upvote_url: url + 'playlists/upvoteSong',
-  update_room_url: url + 'playlists/getPlaylist'
+  create_room_url: url + 'playlists/create/',
+  get_rooms_url: url + 'playlists/getUsersPlaylists',
+  song_search_url: url + 'playlists/search/',
+  song_add_url: url + 'playlists/addTrackToQueue/',
+  song_upvote_url: url + 'playlists/upvoteSong/',
+  update_room_url: url + 'playlists/getPlaylist/'
 };
 
 export default {
@@ -16,10 +16,10 @@ export default {
   /* USER */
   createRoom (context, playlist_name, callback) {
     let body = { params: { playlistName: playlist_name } };
-    context.$http.get(api.song_search_url, body).then(callback);
+    context.$http.get(api.create_room_url, body).then(callback);
   },
 
-  getRooms () {
+  getRooms (context, callback) {
     let body = { };
     context.$http.get(api.get_rooms_url, body).then(callback);
   },
@@ -31,9 +31,14 @@ export default {
     context.$http.get(api.song_search_url, body).then(callback);
   },
 
-  addSong (context, song_id, callback) {
+  addSong (context, playlist_id, song_id, callback) {
 
-    let body = { };
+    let body = { 
+      params: {
+        playlistID: playlist_id,
+        trackID: song_id,
+      }
+    };
     context.$http.get(api.song_add_url, body).then(callback);
   },
 
@@ -41,7 +46,8 @@ export default {
 
   },
 
-  updateRoom () {
-
+  updateRoom (context, code, callback) {
+    let body = { params: { auxCode: code } };
+    context.$http.get(api.update_room_url, body).then(callback);
   }
 }

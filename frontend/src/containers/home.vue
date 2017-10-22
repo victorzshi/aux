@@ -37,7 +37,7 @@
                 <!-- <span class="icon is-medium">
                   <i class="fa fa-github"></i>
                 </span> -->
-                <span>Login</span>
+                <span>Create a Room</span>
               </a>
             </div>
 
