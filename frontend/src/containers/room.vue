@@ -119,7 +119,7 @@ td {
 <script>
 
 import api from '../api'
-import socket from '../sockets'
+// import socket from '../sockets'
 
 export default {
   name: 'home',
@@ -130,34 +130,29 @@ export default {
       room_id: null,
       current_song: null,
       search_text: '',
-      songs: [
-        {title: 'asdasd', artist: 'asdasdaadskfjad;flkj'},
-        {title: 'asdasd', artist: 'asdasdasdsd'},
-        {title: 'asdasd', artist: 'asdasdasdsd'},
-        {title: 'asdasd', artist: 'asdasdasdsd'}
-      ],
-      search_results: [
-        {title: 'asdasd', artist: 'asdasdaadskfjad;flkj'},
-        {title: 'asdasd', artist: 'asdasdasdsd'},
-        {title: 'asdasd', artist: 'asdasdasdsd'},
-        {title: 'asdasd', artist: 'asdasdasdsd'}
-      ]
+      songs: [],
+      search_results: []
     }
   },
   created () {
     this.fetchRoom()
   },
   methods: {
+    getSearchResults (search_string) {
+      api.getSongSearchResults (this, search_string, response => {
+        console.log(response.body)
+      })
+    },
     fetchRoom (code) {
       this.room_code = this.$route.params.id
 
-      socket.connect((new_q) => {
-        // this.
-      }, (close) => {
+      // socket.connect((new_q) => {
+      //   // this.
+      // }, (close) => {
 
-      }, (error) => {
+      // }, (error) => {
 
-      })
+      // })
       // Connect with backend
     },
     postSong (song) {
@@ -170,8 +165,10 @@ export default {
     }
   },
   watch: {
-    '$route' (to, from) {
-      this.fetchRoom()
+    search_text: function (new_text, old_text) {
+      if (new_text != '') {
+        this.getSearchResults(new_text)
+      }
     }
   }
 
