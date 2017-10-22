@@ -37,7 +37,7 @@ router.get('/getPlaylist', function(req, res) {
 
 	var auxCode = req.query.auxCode;
 
-	Playlist.find({auxCode: auxCode}, function (err, playlist) {
+	Playlist.findOne({auxCode: auxCode}, function (err, playlist) {
 		if(err)
 			res.send(err);
 		console.log(playlist);
