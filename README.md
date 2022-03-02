@@ -6,7 +6,7 @@ A weekend project built for fun.
 
 ## Authors
 
-- Andrew McCann
-- Jerry Yuan Chen
-- Sangeet Parashar
-- Victor Zhuoyue Shi
+- Andrew McCann (Programmer)
+- Jerry Yuan Chen (Programmer)
+- Sangeet Parashar (Programmer)
+- Victor Zhuoyue Shi (Programmer)
